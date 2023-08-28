@@ -7,9 +7,22 @@
     ansible.builtin.copy:
       content: "Hello"
       dest: /var/www/html/index.html
+      force: yes
+    notify: restart_httpd
+    tags: [never, alpha]
 
   - name: beta tag task
     ansible.builtin.copy:
       content: "By By"
       dest: /var/www/html/index.html
+      force: yes
+    notify: restart_httpd
+    tags: [never, beta]
+
+  handlers:
+    - name: restart_httpd
+      ansible.builtin.service:
+        name: httpd
+        state: restarted
+        enabled: yes
 
